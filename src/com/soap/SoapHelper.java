@@ -13,9 +13,9 @@ import android.util.Log;
 
 public class SoapHelper {
 
-	public Object getSoapRequest(String NAMESPACE, String METHOD_NAME, String URL, String SOAP_ACTION, LinkedHashMap<String, String> parameters) {
+	public String getSoapRequest(String NAMESPACE, String METHOD_NAME, String URL, String SOAP_ACTION, LinkedHashMap<String, String> parameters) {
 		
-		Object object = null;
+		String response = null;
 		try {
 			SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 			addParameters(parameters, request);
@@ -29,14 +29,13 @@ public class SoapHelper {
 			
 			String requestString = androidHttpTransport.requestDump;
 			Log.d("Request in XML", requestString);
-			String response = androidHttpTransport.responseDump;
-			object = envelope.getResponse();
+			response = androidHttpTransport.responseDump;
 			Log.d("Response in XML", response);
-			Log.d("Response in SOAP",object.toString());
+			Log.d("Response in SOAP",envelope.getResponse().toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return object;
+		return response;
 	}
 	
 	private void addParameters(LinkedHashMap<String, String> parameters, SoapObject request) {

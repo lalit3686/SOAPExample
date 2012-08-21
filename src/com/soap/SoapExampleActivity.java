@@ -4,12 +4,10 @@ import java.util.LinkedHashMap;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 
 public class SoapExampleActivity extends Activity {
 
-	public static int counter = 0;
-	public static String response = ""; 
-	SoapHelper helper;
 	private String NAMESPACE = "http://tempuri.org/";
 	private String METHOD_NAME = "CelsiusToFahrenheit";
 	private String SOAP_ACTION = NAMESPACE+METHOD_NAME;
@@ -20,9 +18,12 @@ public class SoapExampleActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        helper = new SoapHelper();
+        SoapHelper helper = new SoapHelper();
         LinkedHashMap<String, String> parameters = new LinkedHashMap<String, String>();
         parameters.put("Celsius", "22");
-	    helper.getSoapRequest(NAMESPACE, METHOD_NAME, URL, SOAP_ACTION, parameters);
+	    String response = helper.getSoapRequest(NAMESPACE, METHOD_NAME, URL, SOAP_ACTION, parameters);
+	    if(response != null){
+	    	Log.d("Response", response);
+	    }
     }
 }
