@@ -1,5 +1,7 @@
 package com.soap;
 
+import java.util.LinkedHashMap;
+
 import android.app.Activity;
 import android.os.Bundle;
 
@@ -19,6 +21,8 @@ public class SoapExampleActivity extends Activity {
         setContentView(R.layout.main);
         
         helper = new SoapHelper();
-	    helper.getSoapRequest(NAMESPACE, METHOD_NAME, URL, SOAP_ACTION);
+        LinkedHashMap<String, String> parameters = new LinkedHashMap<String, String>();
+        parameters.put("Celsius", "22");
+	    helper.getSoapRequest(NAMESPACE, METHOD_NAME, URL, SOAP_ACTION, parameters);
     }
 }
