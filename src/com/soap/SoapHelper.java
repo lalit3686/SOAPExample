@@ -3,6 +3,7 @@ package com.soap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
+import java.util.Vector;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -31,11 +32,32 @@ public class SoapHelper {
 			Log.d("Request in XML", requestString);
 			response = androidHttpTransport.responseDump;
 			Log.d("Response in XML", response);
-			Log.d("Response in SOAP",envelope.getResponse().toString());
+			
+			@SuppressWarnings("unchecked")
+			Vector<Object> vector = (Vector<Object>) envelope.getResponse();
+			Log.d("Response in SOAP",vector.toString());
+			parseSoapResponse(vector);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return response;
+	}
+	
+	private void parseSoapResponse(Vector<Object> vector) {
+		for (int i = 0; i < vector.size(); i++) {
+			SoapObject object = (SoapObject) vector.get(i);
+			if(object != null){
+				Log.d("name",object.getProperty("name").toString());
+				Log.d("description",object.getProperty("description").toString());
+				Log.d("id",object.getProperty("id").toString());
+				
+				SoapObject priceObj = (SoapObject) object.getProperty("price");
+				if(priceObj != null){
+					Log.d("amount",priceObj.getProperty("amount").toString());
+					Log.d("currency",priceObj.getProperty("currency").toString());
+				}
+			}
+		}
 	}
 	
 	private void addParameters(LinkedHashMap<String, String> parameters, SoapObject request) {
